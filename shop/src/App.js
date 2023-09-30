@@ -1,8 +1,14 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Navbar, Container, Nav,NavDropdown, Row, Col} from 'react-bootstrap';
+import {a,b} from './data.js'
+import { useState } from 'react';
+
 
 function App() {
+
+  let [shoe ] = useState();
+
   return (
     <div className="App">
       <Navbar expand="lg" className="bg-body-tertiary">
