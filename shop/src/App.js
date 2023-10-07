@@ -1,63 +1,92 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Navbar, Container, Nav,NavDropdown, Row, Col} from 'react-bootstrap';
-import {a,b} from './data.js'
+import {a,b} from './data.js';
 import { useState } from 'react';
+import Item from './item';
+import data from './data';
+import Detail from './routes/Detail'
+import About from './routes/About'
+import {Routes, Route, Link ,Outlet} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom/dist';
+
 
 
 function App() {
-
-  let [shoe ] = useState();
-
+  
+  let [shoe, setShoe ] = useState(data);
+  let navigate = useNavigate();
   return (
     <div className="App">
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+          <Nav className = "me-auto">
+            <Nav.Link onClick={()=>{ navigate(-1) }}>Home</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/detail') }}>detail</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/about')}}></Nav.Link>
+          </Nav>
         </Container>
       </Navbar>
 
-      <div className='main-bg'></div>
+      
+     
 
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes2.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-          <div className="col-md-4">
-            <img src="https://codingapple1.github.io/shop/shoes3.jpg" width="80%" />
-            <h4>상품명</h4>
-            <p>상품정보</p>
-          </div>
-        </div>
-      </div>
+      <Routes>
+        <Route path="/" element = {
+          <>
+            <div className='main-bg'></div>
+
+            <div className="container">
+              <div className="row">
+                {
+                  shoe.map((itm, idx)=>{
+                    return( 
+                      <Item idx={idx+1} name={itm.title} info={itm.content}>gd</Item>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          </>
+        }></Route>
+        <Route path="/detail" element={ 
+          <Detail></Detail>
+        } />
+        <Route path="/about" element={<About></About>} >
+          <Route path="member" element={<div>멤버들</div>}></Route>
+          <Route path="location" element={<div>위치</div>}></Route>
+        </Route>
+        <Route path='*' element={<div> 아무것도 없음</div>}></Route>
+      </Routes>
+
+
+      <Container>
+        <Row className="justify-content-md-center">
+          <Col xs lg="2" className="d-grid gap-2">
+            <Button variant='primary' size='lg' onClick={()=>{
+              navigate('/')
+            }}>홈</Button>
+          </Col>
+          <Col xs lg="2" className="d-grid gap-2">
+            <Button variant='primary' size='lg' onClick={()=>{
+              navigate('/about')
+            }}>어바웃</Button>
+          </Col>
+          <Col xs lg="2" className="d-grid gap-2">
+            <Button variant='primary' size='lg' onClick={()=>{
+              navigate('/detail')
+            }}>상세페이지</Button>
+          </Col>
+        </Row>
+      </Container>
+
     </div>
   );
 }
+
+
+
+
 
 export default App;
